@@ -1,6 +1,6 @@
 
 import 'dart:io';
-
+import 'curso.dart';
 import 'pessoa.dart';
 import 'servico.dart';
 
@@ -13,7 +13,7 @@ class UI {
     while(opc != '4'){
       print('''
 --------------------------------------------
-Menu Principal:
+MENU PRINCIPAL:
       1. Gerenciar Alunos
       2. Gerenciar Professores
       3. Gerenciar Cursos
@@ -25,6 +25,12 @@ Menu Principal:
         case '1':
           menuGerenciarAluno();
           break;
+        case '1':
+          menuGerenciarAluno();
+          break;
+        case '3':
+          menuGerenciarCursos();
+          break;
       }
     }
   }
@@ -34,7 +40,8 @@ Menu Principal:
     while(opc != '4'){
       print('''
 --------------------------------------------
-Informe a opção:
+[ALUNOS]
+  Informe a opção:
       1. Cadastrar aluno
       2. Listar alunos
       3. Editar um cadastro de aluno
@@ -73,7 +80,7 @@ Informe a opção:
     pessoa.nascimento = nascimento;
     pessoa.endereco = endereco;
 
-
+    
 
     bool resultado = servico.cadastrarNovaPessoa(pessoa);
     if(resultado){
@@ -81,5 +88,33 @@ Informe a opção:
     } else {
       print('Falha ao cadastrar!');
     }
+  }
+
+  menuGerenciarCursos() {
+    String opc = '';
+    while(opc != '4'){
+      print('''
+--------------------------------------------
+[CURSOS]
+  Informe a opção:
+      1. Cadastrar um curso
+      2. Listar cursos
+      3. Editar um curso
+      4. Excluir um curso
+      5. Voltar
+--------------------------------------------
+''');
+      opc = stdin.readLineSync()!;
+      switch(opc){
+        case '1':
+          menuCadastrarCurso();
+          break;
+      }
+    }
+  }
+
+  menuCadastrarCurso(){
+    Curso curso = Curso();
+
   }
 }
