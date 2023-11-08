@@ -4,6 +4,8 @@ import 'pessoa_repositorio.dart';
 
 class Servico {
 
+  List<Pessoa> listapessoas = [];
+
   PessoaRepositorio pessoaRepositorio = PessoaRepositorio();
 
   bool cadastrarNovaPessoa(Pessoa pessoa){
@@ -14,5 +16,7 @@ class Servico {
     }
     return false;
   }
+
+  
 
 }
