@@ -10,8 +10,16 @@ class UI {
 
   menuPrincipal() {
     String opc = '';
-    while(opc != '2'){
-      print('Informe a opção:\n1. Gerenciar Alunos\n2. Sair');
+    while(opc != '4'){
+      print('''
+--------------------------------------------
+Menu Principal:
+      1. Gerenciar Alunos
+      2. Gerenciar Professores
+      3. Gerenciar Cursos
+      4. Sair
+--------------------------------------------
+      ''');
       opc = stdin.readLineSync()!;
       switch(opc){
         case '1':
@@ -23,8 +31,17 @@ class UI {
 
   menuGerenciarAluno() {
     String opc = '';
-    while(opc != '2'){
-      print('Informe a opção:\n1. Cadastrar aluno\n2. Voltar');
+    while(opc != '4'){
+      print('''
+--------------------------------------------
+Informe a opção:
+      1. Cadastrar aluno
+      2. Listar alunos
+      3. Editar um cadastro de aluno
+      4. Excluir um cadastro de aluno
+      5. Voltar
+--------------------------------------------
+''');
       opc = stdin.readLineSync()!;
       switch(opc){
         case '1':
@@ -35,6 +52,8 @@ class UI {
   }
 
   menuCadastrarAluno() {
+
+    print('--------------------------------------------');
     print('Informe o e-mail:');
     String email = stdin.readLineSync()!;
 
@@ -46,6 +65,7 @@ class UI {
 
     print('Informe o endereço:');
     String endereco = stdin.readLineSync()!;
+    print('');
 
     Pessoa pessoa = Pessoa();
     pessoa.nome = nome;
