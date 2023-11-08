@@ -28,7 +28,7 @@ class UI {
       opc = stdin.readLineSync()!;
       switch(opc){
         case '1':
-        
+          menuCadastrarAluno();
           break;
       }
     }
@@ -41,9 +41,19 @@ class UI {
     print('Informe o nome:');
     String nome = stdin.readLineSync()!;
 
+    print('Informe o nascimento DD/MM/AAAA:');
+    DateTime nascimento = DateTime.parse(stdin.readLineSync()!);
+
+    print('Informe o endereço:');
+    String endereco = stdin.readLineSync()!;
+
     Pessoa pessoa = Pessoa();
     pessoa.nome = nome;
     pessoa.email = email;
+    pessoa.nascimento = nascimento;
+    pessoa.endereco = endereco;
+
+
 
     bool resultado = servico.cadastrarNovaPessoa(pessoa);
     if(resultado){
