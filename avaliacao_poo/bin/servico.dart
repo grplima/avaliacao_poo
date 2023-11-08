@@ -10,7 +10,7 @@ class Servico {
 
   bool cadastrarNovaPessoa(Pessoa pessoa){
     Pessoa? pessoaEncontrada = pessoaRepositorio.buscarPorEmail(pessoa.email);
-    if(pessoaEncontrada != null){
+    if(pessoaEncontrada == null){
       pessoaRepositorio.adicionar(pessoa);
       return true;
     }
