@@ -75,6 +75,7 @@ MENU PRINCIPAL:
     print('');
 
     Pessoa pessoa = Pessoa();
+    pessoa.codigoPessoa = servico.codigoPessoa +1;
     pessoa.nome = nome;
     pessoa.email = email;
     pessoa.nascimento = nascimento;

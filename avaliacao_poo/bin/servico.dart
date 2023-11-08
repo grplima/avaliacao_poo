@@ -4,6 +4,8 @@ import 'pessoa_repositorio.dart';
 
 class Servico {
 
+  int codigoPessoa = 0;
+  int codigoCurso = 0;
   List<Pessoa> listapessoas = [];
 
   PessoaRepositorio pessoaRepositorio = PessoaRepositorio();
