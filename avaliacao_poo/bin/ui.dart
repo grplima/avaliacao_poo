@@ -115,7 +115,22 @@ MENU PRINCIPAL:
   }
 
   menuCadastrarCurso(){
-    Curso curso = Curso();
+
+
+
+    print('--------------------------------------------');
+    print('Informe o nome do curso:');
+    String nomeCurso = stdin.readLineSync()!;
+
+    print('Informe a quantidade maxima de alunos neste curso:');
+    int totalAlunos = int.parse(stdin.readLineSync()!);
+
+    print('Informe o endereço:');
+    String endereco = stdin.readLineSync()!;
+    print('');
+
+    Curso(codigoCurso: servico.codigoCurso +1, nomeCurso: nomeCurso, totalAlunos: totalAlunos);
+    
 
   }
 }
