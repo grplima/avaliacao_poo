@@ -1,4 +1,3 @@
-import 'pessoa.dart';
 import 'ui.dart';
 
 void main() {

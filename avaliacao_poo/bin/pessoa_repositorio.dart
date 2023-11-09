@@ -1,21 +1,22 @@
-
-
 import 'pessoa.dart';
 
 class PessoaRepositorio {
-
   List<Pessoa> listaPessoas = [];
 
-  adicionar(Pessoa pessoa){
+  void adicionar(Pessoa pessoa) {
     listaPessoas.add(pessoa);
   }
 
-  Pessoa? buscarPorEmail(String email){
-    for(final pessoa in listaPessoas){
-      if(pessoa.email == email){
+  Pessoa? buscarPorEmail(String email) {
+    for (final pessoa in listaPessoas) {
+      if (pessoa.email == email) {
         return pessoa;
       }
     }
     return null;
+  }
+
+  List<Pessoa> listarPessoas() {
+    return listaPessoas;
   }
 }

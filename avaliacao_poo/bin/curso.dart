@@ -1,9 +1,10 @@
 import 'pessoa.dart';
 
-class Curso{
-  late int codigoCurso;
-  late String nomeCurso;
-  late int totalAlunos;
-  late List<Pessoa> pessoasTurma;
+class Curso {
+  int codigo;
+  String nome;
+  int totalAlunos;
+  List<Pessoa> pessoas = [];
 
+  Curso(this.codigo, this.nome, this.totalAlunos);
 }

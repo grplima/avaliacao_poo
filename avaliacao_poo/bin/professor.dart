@@ -1,7 +1,13 @@
-import 'pessoa.dart';
+class Professor {
+  final String codigo;
+  final String email;
+  final String nome;
+  final DateTime nascimento;
 
-class Professor extends Pessoa{
-  late double salario;
-
-  
+  Professor({
+    required this.codigo,
+    required this.email,
+    required this.nome,
+    required this.nascimento,
+  });
 }

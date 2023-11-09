@@ -1,29 +1,37 @@
-
-import 'curso.dart';
-import 'curso_repositorio.dart';
 import 'pessoa.dart';
-import 'pessoa_repositorio.dart';
 
 class Servico {
+  List<Pessoa> listaPessoas = [];
 
-  int codigoPessoa = 0;
-  int codigoCurso = 0;
-  List<Pessoa> listapessoas = [];
+  bool cadastrarNovaPessoa(Pessoa pessoa) {
+    if (listaPessoas.any((p) => p.email == pessoa.email)) {
+      print("E-mail já cadastrado.");
+      return false;
+    }
 
-  PessoaRepositorio pessoaRepositorio = PessoaRepositorio();
-  CursoRepositorio cursoRepositorio = CursoRepositorio();
+    listaPessoas.add(pessoa);
+    return true;
+  }
 
-  bool cadastrarNovaPessoa(Pessoa pessoa){
-    Pessoa? pessoaEncontrada = pessoaRepositorio.buscarPorEmail(pessoa.email);
-    if(pessoaEncontrada == null){
-      pessoaRepositorio.adicionar(pessoa);
+  List<Pessoa> listarPessoas() {
+    return listaPessoas;
+  }
+
+  bool editarCadastro(Pessoa pessoa) {
+    final index = listaPessoas.indexWhere((p) => p.codigo == pessoa.codigo);
+    if (index != -1) {
+      listaPessoas[index] = pessoa;
       return true;
     }
     return false;
   }
 
-  cadastrarNovoCurso(Curso curso){
-    cursoRepositorio.adicionarCurso(curso);
+  bool excluirCadastro(int codigo) {
+    final index = listaPessoas.indexWhere((p) => p.codigo == codigo);
+    if (index != -1) {
+      listaPessoas.removeAt(index);
+      return true;
+    }
+    return false;
   }
-
 }

@@ -1,65 +1,68 @@
-
 import 'dart:io';
-import 'curso.dart';
 import 'pessoa.dart';
 import 'servico.dart';
 
 class UI {
-
   Servico servico = Servico();
 
-  menuPrincipal() {
+  void menuPrincipal() {
     String opc = '';
-    while(opc != '4'){
+    while (opc != '3') {
       print('''
 --------------------------------------------
 MENU PRINCIPAL:
-      1. Gerenciar Alunos
-      2. Gerenciar Professores
-      3. Gerenciar Cursos
-      4. Sair
+      1. Gerenciar Pessoas
+      2. Gerenciar Cursos
+      3. Sair
 --------------------------------------------
       ''');
       opc = stdin.readLineSync()!;
-      switch(opc){
+      switch (opc) {
         case '1':
-          menuGerenciarAluno();
+          menuGerenciarPessoas();
           break;
-        case '1':
-          menuGerenciarAluno();
-          break;
-        case '3':
+        case '2':
           menuGerenciarCursos();
           break;
-      }
-    }
-  }
-
-  menuGerenciarAluno() {
-    String opc = '';
-    while(opc != '4'){
-      print('''
---------------------------------------------
-[ALUNOS]
-  Informe a opção:
-      1. Cadastrar aluno
-      2. Listar alunos
-      3. Editar um cadastro de aluno
-      4. Excluir um cadastro de aluno
-      5. Voltar
---------------------------------------------
-''');
-      opc = stdin.readLineSync()!;
-      switch(opc){
-        case '1':
-          menuCadastrarAluno();
+        case '3':
           break;
       }
     }
   }
 
-  menuCadastrarAluno() {
+  void menuGerenciarPessoas() {
+    String opc = '';
+    while (opc != '5') {
+      print('''
+--------------------------------------------
+[PESSOAS]
+  Informe a opção:
+      1. Cadastrar pessoa
+      2. Listar pessoas
+      3. Editar um cadastro de pessoa
+      4. Excluir um cadastro de pessoa
+      5. Voltar
+--------------------------------------------
+      ''');
+      opc = stdin.readLineSync()!;
+      switch (opc) {
+        case '1':
+          menuCadastrarPessoa();
+          break;
+        case '2':
+          listarPessoas();
+          break;
+        case '3':
+          menuEditarCadastro();
+          break;
+        case '4':
+          menuExcluirCadastro();
+          break;
+      }
+    }
+  }
 
+  void menuCadastrarPessoa() {
     print('--------------------------------------------');
     print('Informe o e-mail:');
     String email = stdin.readLineSync()!;
@@ -67,70 +70,99 @@ MENU PRINCIPAL:
     print('Informe o nome:');
     String nome = stdin.readLineSync()!;
 
-    print('Informe o nascimento DD/MM/AAAA:');
-    DateTime nascimento = DateTime.parse(stdin.readLineSync()!);
+    print('Informe o nascimento (DD/MM/AAAA):');
+    String dataNascimentoStr = stdin.readLineSync()!;
+    DateTime nascimento = DateTime.parse(dataNascimentoStr);
 
-    print('Informe o endereço:');
-    String endereco = stdin.readLineSync()!;
-    print('');
+    print('Informe o endereço (opcional):');
+    String? endereco = stdin.readLineSync();
 
-    Pessoa pessoa = Pessoa();
-    pessoa.codigoPessoa = servico.codigoPessoa +1;
-    pessoa.nome = nome;
-    pessoa.email = email;
-    pessoa.nascimento = nascimento;
-    pessoa.endereco = endereco;
-
-    
+    final pessoa = Pessoa(
+        codigo: servico.listaPessoas.length + 1,
+        email: email,
+        nome: nome,
+        nascimento: nascimento,
+        endereco: endereco);
 
     bool resultado = servico.cadastrarNovaPessoa(pessoa);
-    if(resultado){
+    if (resultado) {
       print('Pessoa cadastrada com sucesso!');
     } else {
       print('Falha ao cadastrar!');
     }
   }
 
-  menuGerenciarCursos() {
-    String opc = '';
-    while(opc != '4'){
-      print('''
---------------------------------------------
-[CURSOS]
-  Informe a opção:
-      1. Cadastrar um curso
-      2. Listar cursos
-      3. Editar um curso
-      4. Excluir um curso
-      5. Voltar
---------------------------------------------
-''');
-      opc = stdin.readLineSync()!;
-      switch(opc){
-        case '1':
-          menuCadastrarCurso();
-          break;
+  void listarPessoas() {
+    final pessoas = servico.listarPessoas();
+    if (pessoas.isEmpty) {
+      print('Nenhuma pessoa cadastrada.');
+    } else {
+      print('Pessoas cadastradas:');
+      for (var pessoa in pessoas) {
+        print(
+            'Código: ${pessoa.codigo}, Nome: ${pessoa.nome}, E-mail: ${pessoa.email}');
       }
     }
   }
 
-  menuCadastrarCurso(){
+  void menuEditarCadastro() {
+    print('Informe o código da pessoa a ser editada:');
+    final codigo = int.parse(stdin.readLineSync()!);
 
+    final pessoa = servico.listaPessoas.firstWhere((p) => p.codigo == codigo,
+        orElse: () => Pessoa(codigo: 0, email: '', nome: '', nascimento: DateTime.now()));
+    if (pessoa.codigo == 0) {
+      print('Pessoa não encontrada.');
+      return;
+    }
 
+    print('Informe o novo e-mail:');
+    final novoEmail = stdin.readLineSync()!;
 
-    print('--------------------------------------------');
-    print('Informe o nome do curso:');
-    String nomeCurso = stdin.readLineSync()!;
+    print('Informe o novo nome:');
+    final novoNome = stdin.readLineSync()!;
 
-    print('Informe a quantidade maxima de alunos neste curso:');
-    int totalAlunos = int.parse(stdin.readLineSync()!);
-
-    print('Informe o endereço:');
-    String endereco = stdin.readLineSync()!;
-    print('');
-
-    Curso(codigoCurso: servico.codigoCurso +1, nomeCurso: nomeCurso, totalAlunos: totalAlunos);
-    
-
+    final novaPessoa = Pessoa(
+        codigo: pessoa.codigo,
+        email: novoEmail,
+        nome: novoNome,
+        nascimento: pessoa.nascimento,
+        endereco: pessoa.endereco);
+    if (servico.editarCadastro(novaPessoa)) {
+      print('Cadastro editado com sucesso!');
+    } else {
+      print('Falha ao editar o cadastro.');
+    }
   }
+
+  void menuExcluirCadastro() {
+    print('Informe o código da pessoa a ser excluída:');
+    final codigo = int.parse(stdin.readLineSync()!);
+
+    if (servico.excluirCadastro(codigo)) {
+      print('Cadastro excluído com sucesso!');
+    } else {
+      print('Falha ao excluir o cadastro.');
+    }
+  }
+
+  void iniciar() {
+    menuPrincipal();
+  }
+
+menuGerenciarCursos(){
+  print('''
+--------------------------------------------
+[CURSOS]
+Informe a opção:
+    1. Cadastrar um curso
+    2. Listar cursos
+    3. Editar um curso
+    4. Excluir um curso
+    5. Voltar
+--------------------------------------------
+''');
 }
+
+}
+
