@@ -164,5 +164,24 @@ Informe a opção:
 ''');
 }
 
+menuCadastrarCurso(){
+
+    print('--------------------------------------------');
+    print('Informe o nome do curso:');
+    String nomeCurso = stdin.readLineSync()!;
+
+    print('Informe a quantidade maxima de alunos neste curso:');
+    int totalAlunos = int.parse(stdin.readLineSync()!);
+
+    Curso curso = Curso();
+    servico.codigoCurso +=1;   // aqui se implementa o CODIGO DO CURSO - sempre acrescendo
+    curso.codigoCurso = servico.codigoCurso;
+    curso.nomeCurso = nomeCurso;
+    curso.totalAlunos = totalAlunos;
+    
+    servico.cadastrarNovoCurso(curso);
+
+  }
+
 }
 

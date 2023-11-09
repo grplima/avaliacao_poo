@@ -1,7 +1,9 @@
+import 'curso_repositorio.dart';
 import 'pessoa.dart';
 
 class Servico {
   List<Pessoa> listaPessoas = [];
+  int codigoCurso = 0;
 
   bool cadastrarNovaPessoa(Pessoa pessoa) {
     if (listaPessoas.any((p) => p.email == pessoa.email)) {
@@ -33,5 +35,9 @@ class Servico {
       return true;
     }
     return false;
+  }
+
+  cadastrarNovoCurso() {
+    CursoRepositorio.listaCursos.add(curso);
   }
 }
