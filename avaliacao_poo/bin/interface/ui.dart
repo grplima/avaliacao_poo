@@ -5,6 +5,7 @@ import '../modelo/curso.dart';
 import '../modelo/pessoa.dart';
 import '../modelo/professor.dart';
 import '../servico/servico.dart';
+import 'package:intl/intl.dart';
 
 class UI {
   Servico servico = Servico();
@@ -92,7 +93,35 @@ class UI {
     }
   }
 
-  menuAlterarAluno() {}
+  menuAlterarAluno() {
+    print('Informe o código da pessoa a ser editada:');
+    final codigo = int.parse(stdin.readLineSync()!);
+
+    final pessoa = servico.listaPessoas.firstWhere((p) => p.codigo == codigo,
+        orElse: () => Pessoa(codigo: 0, email: '', nome: '', nascimento: DateTime.now()));
+    if (pessoa.codigo == 0) {
+      print('Pessoa não encontrada.');
+      return;
+    }
+
+    print('Informe o novo e-mail:');
+    final novoEmail = stdin.readLineSync()!;
+
+    print('Informe o novo nome:');
+    final novoNome = stdin.readLineSync()!;
+
+    final novaPessoa = Pessoa(
+        codigo: pessoa.codigo,
+        email: novoEmail,
+        nome: novoNome,
+        nascimento: pessoa.nascimento,
+        endereco: pessoa.endereco);
+    if (servico.editarCadastro(novaPessoa)) {
+      print('Cadastro editado com sucesso!');
+    } else {
+      print('Falha ao editar o cadastro.');
+    }
+  }
 
   menuExcluirAluno() {
     print('Digite o e-mail do aluno a ser excluído:');
