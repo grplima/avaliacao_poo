@@ -7,7 +7,7 @@ class Curso{
   late int codigo;
   late String nome;
   late int totalAlunos;
-  late List<Pessoa> _pessoas;
+  List<Pessoa> _pessoas =[];
 
   
 

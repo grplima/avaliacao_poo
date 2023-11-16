@@ -127,7 +127,7 @@ class UI {
   }
 
   menuAlterarAluno() {
-    print('\nInforme o código da pessoa a ser editada:');
+    print('\nInforme o código do cadastro a ser modificado:');
     final codigo = int.parse(stdin.readLineSync()!);
 
     final pessoa = servico.listarPessoas().firstWhere((p) => p.codigo == codigo,
@@ -160,7 +160,7 @@ class UI {
         pessoa.nascimento = novoNascimento;
         pessoa.endereco = novoEndereco;
 
-    bool resultado = servico.cadastrarPessoa(pessoa);
+    bool resultado = servico.editarCadastro(pessoa);
     if (resultado) {
       print('''
       ┌──────────────────────────────────────────┐
@@ -217,7 +217,7 @@ print('''
       ├────┬──────────────────────────┤
       │  1 │ Cadastrar professor      │
       ├────┼──────────────────────────┤             
-      │  2 │ Edtar professor          │    
+      │  2 │ Editar professor          │    
       ├────┼──────────────────────────┤       
       │  3 │ Excluir professor        │       
       ├────┼──────────────────────────┤       
@@ -335,7 +335,7 @@ print('''
       ├────┬──────────────────────────┤
       │  1 │ Cadastrar curso          │
       ├────┼──────────────────────────┤             
-      │  2 │ Edtar curso              │    
+      │  2 │ Editar curso             │    
       ├────┼──────────────────────────┤       
       │  3 │ Excluir curso            │       
       ├────┼──────────────────────────┤       
