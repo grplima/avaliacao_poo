@@ -13,8 +13,23 @@ class UI {
   menuPrincipal() {
     String opc = '';
     while (opc != '10') {
-      print(
-          'Informe a opção:\n1. Gerenciar Alunos\n2. Gerenciar Professor\n3. Gerenciar Curso\n4. Gerenciar Nota\n10. Sair');
+      print('''
+      ╔═════════════════════════════╗
+      ║        MENU PRINCIPAL       ║
+      ╠═════════════════════════════╣
+      ║ Selecione uma opção:        ║
+      ╠═════╦═══════════════════════╣
+      ║  1  ║   Gerenciar Alunos    ║
+      ╠═════╬═══════════════════════╣     
+      ║  2  ║   Gerenciar Professor ║
+      ╠═════╬═══════════════════════╣     
+      ║  3  ║   Gerenciar Curso     ║
+      ╠═════╬═══════════════════════╣        
+      ║  4  ║   Gerenciar Nota      ║
+      ╠═════╬═══════════════════════╣        
+      ║  10 ║   Sair                ║
+      ╚═════╩═══════════════════════╝                        
+          ''');
       opc = stdin.readLineSync()!;
       switch (opc) {
         case "1":
@@ -40,12 +55,22 @@ class UI {
   menuGerenciarAluno() {
     String opc = '';
     while (opc != '10') {
-      print('Informe a opção:');
-      print('1. Cadastrar aluno');
-      print('2. Editar aluno');
-      print('3. Excluir aluno');
-      print('4. Listar alunos');
-      print('10. Voltar');
+      print('''
+      ┌──────────────────────────┐                          
+      │ Gerenciar alunos         │
+      ├────┬─────────────────────┤
+      │  1 │ Cadastrar aluno     │
+      ├────┼─────────────────────┤             
+      │  2 │ Editar aluno        │    
+      ├────┼─────────────────────┤       
+      │  3 │ Excluir aluno       │       
+      ├────┼─────────────────────┤       
+      │  4 │ Listar todos alunos │
+      ├────┼─────────────────────┤
+      │ 10 │ Voltar              │
+      └────┴─────────────────────┘
+''');
+      
       opc = stdin.readLineSync()!;
       switch (opc) {
         case '1':
@@ -65,7 +90,7 @@ class UI {
   }
 
   menuCadastrarAluno() {
-    print('Informe o e-mail:');
+    print('\nInforme o e-mail:');
     String email = stdin.readLineSync()!;
 
     print('Informe o nome:');
@@ -87,57 +112,90 @@ class UI {
 
     bool resultado = servico.cadastrarPessoa(aluno);
     if (resultado) {
-      print('Pessoa cadastrada com sucesso!');
+      print('''
+      ┌──────────────────────────────────────────┐
+      │   ✔  Pessoa cadastrada com sucesso  ✔    │
+      └──────────────────────────────────────────┘
+          ''');
     } else {
-      print('Falha ao cadastrar!');
+      print('''
+      ┌──────────────────────────────────────────┐
+      │   X       Falha ao cadastrar        X    │
+      └──────────────────────────────────────────┘
+      ''');
     }
   }
 
   menuAlterarAluno() {
-    print('Informe o código da pessoa a ser editada:');
+    print('\nInforme o código da pessoa a ser editada:');
     final codigo = int.parse(stdin.readLineSync()!);
 
     final pessoa = servico.listarPessoas().firstWhere((p) => p.codigo == codigo,
         orElse: () => Pessoa());
     if (pessoa.codigo == 0) {
-      print('Pessoa não encontrada.');
+      print('''
+      ┌──────────────────────────────────────────┐
+      │   X       Pessoa não encontrada     X    │
+      └──────────────────────────────────────────┘
+      ''');
       return;
     }
 
-    print('Informe o novo e-mail:');
+    print('\nInforme o novo e-mail:');
     final novoEmail = stdin.readLineSync()!;
 
     print('Informe o novo nome:');
     final novoNome = stdin.readLineSync()!;
 
     print('Informe a nova data de nascimento: (dd/mm/aaaa)');
-    DateTime novaData = DateTime.parse(stdin.readLineSync()!);
+    String salvarNovaNascimento = stdin.readLineSync()!;
+    DateFormat ndf = DateFormat('dd/MM/yyyy');
+    DateTime novoNascimento = ndf.parse(salvarNovaNascimento);
+
+    print('Informe o novo nome:');
+    final novoEndereco = stdin.readLineSync()!;
 
         pessoa.email = novoEmail;
         pessoa.nome = novoNome;
-        (pessoa.nascimento = novaData) as String;
-        pessoa.endereco = pessoa.endereco;
+        pessoa.nascimento = novoNascimento;
+        pessoa.endereco = novoEndereco;
 
     bool resultado = servico.cadastrarPessoa(pessoa);
     if (resultado) {
-      print('Pessoa cadastrada com sucesso!');
+      print('''
+      ┌──────────────────────────────────────────┐
+      │   ✔  Pessoa cadastrada com sucesso  ✔   │
+      └──────────────────────────────────────────┘
+          ''');
     } else {
-      print('Falha ao cadastrar!');
+      print('''
+      ┌──────────────────────────────────────────┐
+      │   X       Falha ao cadastrar        X    │
+      └──────────────────────────────────────────┘
+      ''');
     }
   }
 
   menuExcluirAluno() {
-    print('Digite o e-mail do aluno a ser excluído:');
-    String email = stdin.readLineSync()!;
+    print('\nDigite o código do aluno a ser excluído:');
+    int excCodigo = int.parse(stdin.readLineSync()!);
 
     Pessoa pessoa = Pessoa();
-    pessoa.email = email;
+    pessoa.codigo = excCodigo;
 
-    bool alunoFoiExcluido = servico.excluirPessoa(pessoa);
+    bool alunoFoiExcluido = servico.excluirPessoa(excCodigo);
     if (alunoFoiExcluido) {
-      print('Aluno excluída com sucesso');
+      print('''
+          ┌──────────────────────────────────────────┐
+          │    ✔  Aluno excluido com sucesso  ✔     │
+          └──────────────────────────────────────────┘
+          ''');
     } else {
-      print('Falha ao excluir!');
+      print('''
+          ┌──────────────────────────────────────────┐
+          │   X        Falha ao excluir         X    │
+          └──────────────────────────────────────────┘
+      ''');
     }
   }
 
@@ -152,12 +210,24 @@ class UI {
   menuGerenciarProfessor() {
     String opc = '';
     while (opc != '10') {
-      print('Informe a opção:');
-      print('1. Cadastrar professor');
-      print('2. Editar professor');
-      print('3. Excluir professor');
-      print('4. Listar professores');
-      print('10. Voltar');
+
+print('''
+      ┌───────────────────────────────┐                          
+      │ Gerenciar professores         │
+      ├────┬──────────────────────────┤
+      │  1 │ Cadastrar professor      │
+      ├────┼──────────────────────────┤             
+      │  2 │ Edtar professor          │    
+      ├────┼──────────────────────────┤       
+      │  3 │ Excluir professor        │       
+      ├────┼──────────────────────────┤       
+      │  4 │ Listar todos professores │
+      ├────┼──────────────────────────┤
+      │ 10 │ Voltar                   │
+      └────┴──────────────────────────┘
+''');
+
+      
       opc = stdin.readLineSync()!;
       switch (opc) {
         case '1':
@@ -177,7 +247,7 @@ class UI {
   }
 
   menuCadastrarProfessor() {
-    print('Informe o e-mail:');
+    print('\nInforme o e-mail:');
     String email = stdin.readLineSync()!;
 
     print('Informe o nome:');
@@ -202,27 +272,50 @@ class UI {
 
     bool resultado = servico.cadastrarPessoa(professor);
     if (resultado) {
-      print('Professor cadastrada com sucesso!');
+      print('''
+          ┌────────────────────────────────────────────────┐
+          │    ✔  Professor cadastrado com sucesso  ✔     │
+          └────────────────────────────────────────────────┘
+          ''');
     } else {
-      print('Falha ao cadastrar!');
-    }
+      print('''
+          ┌────────────────────────────────────────────┐
+          │   X        Falha ao cadastrar         X    │
+          └────────────────────────────────────────────┘
+      ''');
+    } 
   }
 
   menuAlterarProfessor() {}
 
   menuExcluirProfessor() {
-    print('Digite o e-mail do professor a ser excluído:');
-    String email = stdin.readLineSync()!;
+  print('\nDigite o código do professor a ser excluído:');
+    int excCodigoProf = int.parse(stdin.readLineSync()!);
+    Professor professor = Professor();
+    professor.codigo = excCodigoProf;
 
-    Pessoa pessoa = Pessoa();
-    pessoa.email = email;
 
-    bool professorFoiExcluido = servico.excluirPessoa(pessoa);
-    if (professorFoiExcluido) {
-      print('Professor excluído com sucesso');
+    bool professprFoiExcluido = servico.excluirPessoa(excCodigoProf);
+    // print('\nDigite o codigo do professor a ser excluído:');
+    // String email = stdin.readLineSync()!;
+
+    // Pessoa pessoa = Pessoa();
+    // pessoa.email = email;
+
+    // bool professorFoiExcluido = servico.excluirPessoa(pessoa);
+    if (professprFoiExcluido) {
+      print('''
+          ┌──────────────────────────────────────────────┐
+          │    ✔  Professor excluido com sucesso  ✔     │
+          └──────────────────────────────────────────────┘
+          ''');
     } else {
-      print('Falha ao excluir!');
-    }
+      print('''
+          ┌──────────────────────────────────────────┐
+          │   X        Falha ao excluir         X    │
+          └──────────────────────────────────────────┘
+      ''');
+    } 
   }
 
   menuListarProfessor() {
@@ -236,12 +329,22 @@ class UI {
   menuGerenciarCurso() {
     String opc = '';
     while (opc != '10') {
-      print('Informe a opção:');
-      print('1. Cadastrar curso');
-      print('2. Editar curso');
-      print('3. Excluir curso');
-      print('4. Listar cursos');
-      print('10. Voltar');
+      print('''
+      ┌───────────────────────────────┐                          
+      │ Gerenciar cursos              │
+      ├────┬──────────────────────────┤
+      │  1 │ Cadastrar curso          │
+      ├────┼──────────────────────────┤             
+      │  2 │ Edtar curso              │    
+      ├────┼──────────────────────────┤       
+      │  3 │ Excluir curso            │       
+      ├────┼──────────────────────────┤       
+      │  4 │ Listar todos os cursos   │
+      ├────┼──────────────────────────┤
+      │ 10 │ Voltar                   │
+      └────┴──────────────────────────┘
+''');
+      
       opc = stdin.readLineSync()!;
       switch (opc) {
         case '1':
@@ -261,7 +364,7 @@ class UI {
   }
 
   menuCadastrarCurso() {
-    print('Informe o nome do curso a ser criado:');
+    print('\nInforme o nome do curso a ser criado:');
     String nome = stdin.readLineSync()!;
 
     print('Informe a quantidade total de alunos:');
@@ -278,11 +381,20 @@ class UI {
     //1 add aluno, 2 add professor, 3 remover pessoa
     String opc = '';
     while (opc != '10') {
-      print('Informe a opção:');
-      print('1. Adicionar Aluno no curso');
-      print('2. Adicionar Professor no curso');
-      print('3. Excluir pessoa do curso');
-      print('10. Voltar');
+      print('''
+      ┌───────────────────────────────┐                          
+      │ Alterar curso                 │
+      ├────┬──────────────────────────┤
+      │  1 │ Adicionar aluno          │
+      ├────┼──────────────────────────┤             
+      │  2 │ Adicionar professor      │    
+      ├────┼──────────────────────────┤       
+      │  3 │ Excluir pessoa do curso  │       
+      ├────┼──────────────────────────┤       
+      │ 10 │ Voltar                   │
+      └────┴──────────────────────────┘
+      ''');
+      
       opc = stdin.readLineSync()!;
       switch (opc) {
         case '1':
@@ -299,7 +411,7 @@ class UI {
   }
 
   menuAddAlunoNoCurso() {
-    print('Digite o código do curso a receber um aluno: ');
+    print('\nDigite o código do curso a receber um aluno: ');
     int codigoCurso = int.parse(stdin.readLineSync()!);
     Curso? curso = servico.buscarCursoPorCodigo(codigoCurso);
 
@@ -311,15 +423,24 @@ class UI {
       if (aluno != null) {
         servico.addAlunoNoCurso(aluno, curso);
       } else {
-        print("Aluno com código $codigoAluno não existe!");
+        
+        print('''
+      ┌────────────────────────────────────────────────────────┐
+      │    X  Aluno com código $codigoAluno não existe!  X     │
+      └────────────────────────────────────────────────────────┘
+        ''');
       }
     } else {
-      print('Curso com código $codigoCurso não existe!');
+      print('''
+      ┌────────────────────────────────────────────────────────┐
+      │    X  Curso com código $codigoCurso não existe!  X     │
+      └────────────────────────────────────────────────────────┘
+        ''');
     }
   }
 
   menuAddProfessorNoCurso() {
-    print('Digite o código do curso a receber o professor: ');
+    print('\nDigite o código do curso a receber o professor: ');
     int codigoCurso = int.parse(stdin.readLineSync()!);
     Curso? curso = servico.buscarCursoPorCodigo(codigoCurso);
 
@@ -331,15 +452,25 @@ class UI {
       if (professor != null) {
         servico.addProfessorNoCurso(professor, curso);
       } else {
-        print("Professor com código $codigoProfessor não existe!");
+        print('''
+      ┌────────────────────────────────────────────────────────────────┐
+      │    X  Professor com código $codigoProfessor não existe!  X     │
+      └────────────────────────────────────────────────────────────────┘
+        ''');
       }
     } else {
-      print('Curso com código $codigoCurso não existe!');
+
+      print('''
+      ┌────────────────────────────────────────────────────────────────┐
+      │      X    Curso com código $codigoCurso não existe!    X       │
+      └────────────────────────────────────────────────────────────────┘
+      
+      ''');
     }
   }
 
   menuRemoverPessoaDoCurso() {
-    print('Digite o código do curso que a pessoa será removida: ');
+    print('\nDigite o código do curso que a pessoa será removida: ');
     int codigoCurso = int.parse(stdin.readLineSync()!);
     Curso? curso = servico.buscarCursoPorCodigo(codigoCurso);
 
@@ -351,23 +482,38 @@ class UI {
       if (pessoa != null) {
         servico.excluirPessoaDoCurso(pessoa, curso);
       } else {
-        print("Pessoa com código $codigoPessoa não existe!");
+        print('''
+      ┌──────────────────────────────────────────────────────────────────┐
+      │      X    Pessoa com código $codigoPessoa não existe!    X       │
+      └──────────────────────────────────────────────────────────────────┘
+''');
       }
     } else {
-      print('Curso com código $codigoCurso não existe!');
+      print('''
+      ┌──────────────────────────────────────────────────────────────────┐
+      │       X    Curso com código $codigoCurso não existe!    X        │
+      └──────────────────────────────────────────────────────────────────┘
+''');
     }
   }
 
   menuExcluirCurso() {
-    print('Digite o código do curso a ser excluído:');
+    print('\nDigite o código do curso a ser excluído:');
     int codigo = int.parse(stdin.readLineSync()!);
 
     bool cursoFoiExcluido = servico.excluirCurso(codigo);
     if (cursoFoiExcluido) {
-      print('Curso excluído com sucesso');
+      print('''
+      ┌──────────────────────────────────────────────┐
+      │      ✔  Curso excluído com sucesso  ✔       │
+      └──────────────────────────────────────────────┘
+''');
     } else {
-      print(
-          'Falha ao excluir!'); //melhorar mensagem: se o código existe ou se tinha aluno no curso
+      print( '''
+      ┌──────────────────────────────────────────┐
+      │   X      Falha ao excluir curso     X    │
+      └──────────────────────────────────────────┘
+'''); 
     }
   }
 
@@ -382,12 +528,22 @@ class UI {
   menuGerenciarNota() {
     String opc = '';
     while (opc != '10') {
-      print('Informe a opção:');
-      print('1. Adicionar nota para o Aluno x no Curso y:');
-      print('2. Editar nota');
-      print('3. Excluir nota para o Aluno x no Curso y:');
-      print('4. Exibir média do Aluno x no Curso y:');
-      print('10. Voltar');
+      print('''
+      ┌───────────────────────────────────────────────────────┐                          
+      │ Gerenciar notas                                       │
+      ├────┬──────────────────────────────────────────────────┤
+      │  1 │ Adicionar nota para o Aluno (X) no Curso (Y)     │
+      ├────┼──────────────────────────────────────────────────┤             
+      │  2 │ Edtar nota                                       │    
+      ├────┼──────────────────────────────────────────────────┤       
+      │  3 │ Excluir nota para o Aluno (X) no Curso (Y)       │       
+      ├────┼──────────────────────────────────────────────────┤       
+      │  4 │ Exibir média do Aluno (X) no Curso (Y)           │
+      ├────┼──────────────────────────────────────────────────┤
+      │ 10 │ Voltar                                           │
+      └────┴──────────────────────────────────────────────────┘
+
+''');
       opc = stdin.readLineSync()!;
       switch (opc) {
         case '1':
@@ -407,7 +563,7 @@ class UI {
   }
 
   menuCadastrarNota() {
-    print('Digite o código do Aluno a receber a nota: ');
+    print('\nDigite o código do Aluno a receber a nota: ');
     int codigoAluno = int.parse(stdin.readLineSync()!);
     Aluno? aluno = servico.buscarAlunoPorCodigo(codigoAluno);
 
@@ -428,7 +584,7 @@ class UI {
   menuAlterarNota() {}
 
   menuExcluirNota() {
-    print('Digite o código do Aluno que a nota será excluída: ');
+    print('\nDigite o código do Aluno que a nota será excluída: ');
     int codigoAluno = int.parse(stdin.readLineSync()!);
     Aluno? aluno = servico.buscarAlunoPorCodigo(codigoAluno);
 
@@ -447,7 +603,7 @@ class UI {
   }
 
   menuExibirMedia() {
-    print('Digite o código do Aluno que a média será exibida: ');
+    print('\nDigite o código do Aluno que a média será exibida: ');
     int codigoAluno = int.parse(stdin.readLineSync()!);
     Aluno? aluno = servico.buscarAlunoPorCodigo(codigoAluno);
 

@@ -19,14 +19,23 @@ class Servico {
     return false;
   }
 
-  bool excluirPessoa(Pessoa pessoa) {
-    if(pessoa is Aluno){
-      Aluno aluno = pessoa;
-      aluno.notas = []; //removendo as notas do aluno antes de excluir ele
+bool excluirPessoa(int codigo) {
+    final index = pessoaRepositorio.listaPessoas.indexWhere((p) => p.codigo == codigo);
+    if (index != -1) {
+      pessoaRepositorio.listaPessoas.removeAt(index);
+      return true;
     }
-    bool pessoaFoiExcluida = pessoaRepositorio.excluir(pessoa);
-    return pessoaFoiExcluida; 
+    return false;
   }
+
+  // bool excluirPessoa(Pessoa pessoa) {
+  //   if(pessoa is Aluno){
+  //     Aluno aluno = pessoa;
+  //     aluno.notas = []; //removendo as notas do aluno antes de excluir ele
+  //   }
+  //   bool pessoaFoiExcluida = pessoaRepositorio.excluir(pessoa);
+  //   return pessoaFoiExcluida; 
+  // }
 
    bool editarCadastro(Pessoa pessoa) {
     final index = pessoaRepositorio.listaPessoas.indexWhere((p) => p.codigo == pessoa.codigo);
