@@ -7,7 +7,6 @@ import '../modelo/professor.dart';
 import '../servico/servico.dart';
 import 'package:intl/intl.dart';
 
-
 class UI {
   Servico servico = Servico();
 
@@ -80,7 +79,7 @@ class UI {
     print('Informe o endereço completo:');
     String endereco = stdin.readLineSync()!;
 
-    Aluno aluno = Aluno();
+    Aluno aluno = Aluno(nome, nascimento, endereco);
     aluno.nome = nome;
     aluno.email = email;
     aluno.nascimento = nascimento;
@@ -98,8 +97,8 @@ class UI {
     print('Informe o código da pessoa a ser editada:');
     final codigo = int.parse(stdin.readLineSync()!);
 
-    final pessoa = servico.listaPessoas.firstWhere((p) => p.codigo == codigo,
-        orElse: () => Pessoa(codigo: 0, email: '', nome: '', nascimento: DateTime.now()));
+    final pessoa = servico.listarPessoas().firstWhere((p) => p.codigo == codigo,
+        orElse: () => Pessoa());
     if (pessoa.codigo == 0) {
       print('Pessoa não encontrada.');
       return;
@@ -111,16 +110,19 @@ class UI {
     print('Informe o novo nome:');
     final novoNome = stdin.readLineSync()!;
 
-    final novaPessoa = Pessoa(
-        codigo: pessoa.codigo,
-        email: novoEmail,
-        nome: novoNome,
-        nascimento: pessoa.nascimento,
-        endereco: pessoa.endereco);
-    if (servico.editarCadastro(novaPessoa)) {
-      print('Cadastro editado com sucesso!');
+    print('Informe a nova data de nascimento: (dd/mm/aaaa)');
+    DateTime novaData = DateTime.parse(stdin.readLineSync()!);
+
+        pessoa.email = novoEmail;
+        pessoa.nome = novoNome;
+        (pessoa.nascimento = novaData) as String;
+        pessoa.endereco = pessoa.endereco;
+
+    bool resultado = servico.cadastrarPessoa(pessoa);
+    if (resultado) {
+      print('Pessoa cadastrada com sucesso!');
     } else {
-      print('Falha ao editar o cadastro.');
+      print('Falha ao cadastrar!');
     }
   }
 
@@ -188,6 +190,9 @@ class UI {
 
     print('Informe o endereço completo:');
     String endereco = stdin.readLineSync()!;
+
+    print('Informe o salário do professor:');
+    double salario = double.parse(stdin.readLineSync()!);
 
     Professor professor = Professor();
     professor.nome = nome;

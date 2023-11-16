@@ -28,6 +28,15 @@ class Servico {
     return pessoaFoiExcluida; 
   }
 
+   bool editarCadastro(Pessoa pessoa) {
+    final index = pessoaRepositorio.listaPessoas.indexWhere((p) => p.codigo == pessoa.codigo);
+    if (index != -1) {
+      pessoaRepositorio.listaPessoas[index] = pessoa;
+      return true;
+    }
+    return false;
+  }
+
   List<Pessoa> listarPessoas() {
     List<Pessoa> listaDePessoas = pessoaRepositorio.listar();
     return listaDePessoas;
