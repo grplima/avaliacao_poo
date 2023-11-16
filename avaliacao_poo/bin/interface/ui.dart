@@ -152,7 +152,7 @@ class UI {
     DateFormat ndf = DateFormat('dd/MM/yyyy');
     DateTime novoNascimento = ndf.parse(salvarNovaNascimento);
 
-    print('Informe o novo nome:');
+    print('Informe o novo endereco:');
     final novoEndereco = stdin.readLineSync()!;
 
         pessoa.email = novoEmail;
