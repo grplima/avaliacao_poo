@@ -1,7 +1,6 @@
-
-import 'interface/ui.dart';
+import 'ui.dart';
 
 void main() {
-  UI ui = UI();
+  Ui ui = Ui();
   ui.menuPrincipal();
 }
